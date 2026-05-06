@@ -28,22 +28,26 @@ app.set('views', path.join(__dirname, 'src/views'));
   */
 app.get('/', async (req, res) => {
     const title = 'Home';
-    res.render('home', { title });
+    const description = 'Welcome to our community service platform.';
+    res.render('home', { title, description });
 });
 
 app.get('/organizations', async (req, res) => {
     const title = 'Our Partner Organizations';
-    res.render('organizations', { title });
+    const description = 'Browse our partner organizations and learn how they support the community.';
+    res.render('organizations', { title, description });
 });
 
 app.get('/projects', async (req, res) => {
     const title = 'Service Projects';
-    res.render('projects', { title });
+    const description = 'Explore service projects available for volunteers in your area.';
+    res.render('projects', { title, description });
 });
 
 app.get('/categories', async (req, res) => {
     const title = 'Service Project Categories';
-    res.render('categories', { title });
+    const description = 'Browse service project categories to find opportunities that match your interests.';
+    res.render('categories', { title, description });
 });
 
 
