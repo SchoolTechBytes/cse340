@@ -6,6 +6,11 @@ CREATE TABLE organization (
     logo_filename VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE projects (
+    project_id SERIAL PRIMARY KEY,
+    organization_id 
+);
+
 INSERT INTO organization (name, description, contact_email, logo_filename)
 VALUES
     (
