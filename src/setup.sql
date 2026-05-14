@@ -1,6 +1,10 @@
 -- Remove tables if they already exist FOR DEV USE ONLY!!!!!!!!
+-- This helps clean everything up when adding or modifying the Schemas
+-- Comment out if you dont want to remove tables 
 DROP TABLE IF EXISTS projects CASCADE;
 DROP TABLE IF EXISTS organizations CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS project_categories CASCADE;
 
 CREATE TABLE organizations (
     organization_id SERIAL PRIMARY KEY,
@@ -22,6 +26,28 @@ CREATE TABLE projects (
         FOREIGN KEY (organization_id)
         REFERENCES organizations (organization_id)
         ON DELETE CASCADE -- This is incase an organization is removed then all the projects are removed for that org. Keeps things clean.
+);
+
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE project_categories (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+
+    PRIMARY KEY (project_id, category_id),
+
+    CONSTRAINT fk_project
+        FOREIGN KEY (project_id)
+        REFERENCES projects(project_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_category
+        FOREIGN KEY (category_id)
+        REFERENCES categories(category_id)
+        ON DELETE CASCADE
 );
 
 INSERT INTO organizations (name, description, contact_email, logo_filename)
@@ -156,3 +182,29 @@ VALUES
         'Denton, TX',
         '2026-11-20'
     );
+
+INSERT INTO categories (name)
+VALUES
+    ('Infrastructure'),
+    ('Education & Training'),
+    ('Community Outreach'),
+    ('Sustainability'),
+    ('Emergency Response');
+
+INSERT INTO project_categories (project_id, category_id)
+VALUES
+(1, 1), (1, 2),
+(2, 1),
+(3, 1), (3, 2),
+(4, 1),
+(5, 1), (5, 5),
+(6, 4),
+(7, 4), (7, 2),
+(8, 2),
+(9, 4),
+(10, 4),
+(11, 3),
+(12, 3),
+(13, 5),
+(14, 3),
+(15, 3), (15, 5);
