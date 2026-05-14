@@ -5,11 +5,16 @@
 
     <h2>Upcoming Service Projects</h2>
     <ul>
-        <li>Park Cleanup - Join us to clean up local parks and make them
-            beautiful!</li>
-        <li>Food Drive - Help collect and distribute food to those in need.</li>
-        <li>Community Tutoring - Volunteer to tutor students in various
-            subjects.</li>
+
+        <% projects.forEach(projects => { %>
+        <li>
+            <!--We are formating the date here so that it displays as 6/15/2026 and not the CDT format-->
+            Date: <%= projects.project_date.toLocaleDateString() %>
+            <br>
+            <%= projects.title %> (<%= projects.organization_name %>)
+        </li>
+
+        <% }); %>
     </ul>
 
 </main>
