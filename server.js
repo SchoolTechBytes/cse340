@@ -2,9 +2,8 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import router from './src/routes.js';
+import { error } from 'console';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
@@ -26,41 +25,54 @@ app.set('view engine', 'ejs');
 // Tell Express where to find your templates
 app.set('views', path.join(__dirname, 'src/views'));
 
+// Middleware to log all incoming requests
+app.use((req, res, next) => {
+    if (NODE_ENV === 'development') {
+        console.log(`${req.method} ${req.url}`);
+    }
+    next(); // Pass control to the next middleware or route
+});
+
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+    res.locals.NODE_ENV = NODE_ENV;
+    next();
+});
+
 
 /**
   * Routes
   */
-app.get('/', async (req, res) => {
-    const title = 'Home';
-    const description = 'Welcome to our community service platform.';
-    res.render('home', { title, description });
+app.use(router);
+
+// Catch-all route for 404 errors
+app.use((req, res, next) => {
+    const err = new Error('Page Not Found');
+    err.status = 404;
+    next(err);
 });
 
-app.get('/organizations', async (req, res) => {
-    const organizations = await getAllOrganizations();
-    console.log(organizations);
+// Global error handler
+app.use((err, req, res, next) => {
+    // Log error details for debugging
+    console.error('Error occurred: ', err.message);
+    console.error('Stack trace:', err.stack);
 
-    const title = 'Our Partner Organizations';
-    const description = 'Browse our partner organizations and learn how they support the community.';
-    res.render('organizations', { title, description, organizations });
-});
+    // Determine status and template
+    const status = err.status || 500;
+    const template = status === 404 ? '404' : '500';
 
-app.get('/projects', async (req, res) => {
-    const projects = await getAllProjects();
-    console.log(projects);
+    // Prepare data for the template
+    const context = {
+        title: status === 404 ? 'Page Not Found' : 'Server Error',
+        error: err.message,
+        stack: err.stack
+    };
 
-    const title = 'Service Projects';
-    const description = 'Explore service projects available for volunteers in your area.';
-    res.render('projects', { title, description, projects });
-});
+    const description = 'Error page';
 
-app.get('/categories', async (req, res) => {
-    const categories = await getAllCategories();
-    console.log(categories);
-
-    const title = 'Service Project Categories';
-    const description = 'Browse service project categories to find opportunities that match your interests.';
-    res.render('categories', { title, description, categories });
+    // Render the appropriate error template
+    res.status(status).render(`errors/${template}`, context);
 });
 
 
