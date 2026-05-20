@@ -6,12 +6,12 @@
     <h2>Upcoming Service Projects</h2>
     <ul>
 
-        <% projects.forEach(projects => { %>
+        <% projects.forEach(project => { %>
         <li>
             <!--We are formating the date here so that it displays as 6/15/2026 and not the CDT format-->
-            Date: <%= projects.project_date.toLocaleDateString() %>
+            Date: <%= project.project_date.toLocaleDateString() %>
             <br>
-            <%= projects.title %> (<%= projects.organization_name %>)
+            <%= project.title %> (<%= project.organization_name %>)
         </li>
 
         <% }); %>

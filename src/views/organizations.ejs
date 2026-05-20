@@ -8,13 +8,15 @@
     <p>Here are a few of our partner organizations:</p>
     <ul class="org-list">
 
-        <% organizations.forEach(organizations => { %>
-        <li><img src="/images/<%= organizations.logo_filename %>"
-                alt="<%= organizations.name %> logo">
+        <% organizations.forEach(organization => { %>
+        <li><img src="/images/<%= organization.logo_filename %>"
+                alt="<%= organization.name %> logo">
             <div><strong>
-                    <%= organizations.name %>
+                    <a
+                        href="/organization/<%= organization.organization_id %>"><%=
+                        organization.name %></a>
                 </strong><span class="org-contact">
-                    <%= organizations.contact_email %>
+                    <%= organization.contact_email %>
                 </span></div>
         </li>
         <% }); %>
