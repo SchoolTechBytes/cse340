@@ -65,7 +65,7 @@ const getCategoriesByProject = async (projectId) => {
 
 const assignCategoryToProject = async (projectId, categoryId) => {
     const query = `
-        INSERT INTO project_category (projectId, categoryId)
+        INSERT INTO project_categories (project_id, category_Id)
         VALUES ($1, $2);
     `;
 
@@ -74,7 +74,7 @@ const assignCategoryToProject = async (projectId, categoryId) => {
 
 const updateCategoryAssignments = async (projectId, categoryIds) => {
     const deleteQuery = `
-        DELETE FORM project_category
+        DELETE FROM project_categories
         WHERE project_id = $1;
     `;
 
