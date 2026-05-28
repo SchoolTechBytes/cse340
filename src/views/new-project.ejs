@@ -18,7 +18,7 @@
 
             <div class="form-group">
                 <label for="location">Location</label>
-                <input type="email" id="location" name="location" required />
+                <input type="text" id="location" name="location" required />
             </div>
 
             <div class="form-group">
@@ -26,7 +26,19 @@
                 <input type="date" id="date" name="date" required />
             </div>
 
-            <button type="submit">Create Organization</button>
+            <div class="form-group">
+                <label for="organization_id">Organization</label>
+                <select id="organization_id" name="organization_id" required>
+                    <option value="">-- Select an Organization --</option>
+                    <% organizations.forEach(organization=> { %>
+                        <option value="<%= organization.organization_id %>">
+                            <%= organization.name %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+
+            <button type="submit">Create Project</button>
         </form>
     </main>
 

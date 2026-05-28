@@ -1,18 +1,21 @@
 <%- include('partials/header') %>
 
-<main>
-    <h1><%= title %></h1>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
 
-    <h2>Categories</h2>
-    <ul>
+        <h2>Categories</h2>
+        <ul>
 
-        <% categories.forEach(categories => { %>
-        <li><a href="/category/<%= categories.category_id %>"><%=
-                categories.name %></a></li>
+            <% categories.forEach(categories=> { %>
+                <li><a href="/category/<%= categories.category_id %>">
+                        <%= categories.name %>
+                    </a></li>
 
-        <% }); %>
-    </ul>
+                <% }); %>
+        </ul>
 
-</main>
+    </main>
 
-<%- include('partials/footer') %>
+    <%- include('partials/footer') %>

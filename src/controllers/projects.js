@@ -1,6 +1,38 @@
+import { body, validationResult } from 'express-validator';
 import { getUpcomingProjects, getProjectDetails, createProject } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { getCategoriesByProject } from '../models/categories.js';
+
+const projectValidation = [
+    body('title')
+        .trim()
+        .notEmpty()
+        .withMessage('Title is required')
+        .isLength({ min: 3, max: 200 })
+        .withMessage('Title name must be between 3 and 200 characters'),
+    body('description')
+        .trim()
+        .notEmpty()
+        .withMessage('Service Project description is required')
+        .isLength({ max: 1000 })
+        .withMessage('Service Project description cannot exceed 1000 characters'),
+    body('location')
+        .trim()
+        .notEmpty()
+        .withMessage('Service Project location is required')
+        .isLength({ max: 200 })
+        .withMessage('Service Project location cannot exceed 200 characters'),
+    body('date')
+        .notEmpty()
+        .withMessage('Service Project date is required')
+        .isISO8601()
+        .withMessage('Date must be a valid date format'),
+    body('organization_id')
+        .notEmpty()
+        .withMessage('Organization is required')
+        .isInt()
+        .withMessage('Organization must be a valid integer')
+];
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
@@ -29,6 +61,18 @@ const showNewProjectForm = async (req, res) => {
 };
 
 const processNewProjectForm = async (req, res) => {
+    // Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - Loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the new project form
+        return res.redirect('/new-project');
+    }
+
     const { title, description, location, date, organization_id } = req.body;
     const projectId = await createProject(title, description, location, date, organization_id);
 
@@ -36,4 +80,4 @@ const processNewProjectForm = async (req, res) => {
     res.redirect('/projects');
 };
 
-export { showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNewProjectForm };
+export { showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, projectValidation };
