@@ -43,7 +43,7 @@ const createOrganization = async (name, description, contactEmail, logoFilename)
   const query = `
       INSERT INTO public.organizations (name, description, contact_email, logo_filename)
       VALUES ($1, $2, $3, $4)
-      RETURNING organization_id
+      RETURNING organization_id;
     `;
 
   const queryParams = [name, description, contactEmail, logoFilename];
@@ -80,6 +80,6 @@ const updateOrganization = async (organization_id, name, description, contactEma
   }
 
   return result.rows[0].organization_id;
-}
+};
 
 export { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization };
