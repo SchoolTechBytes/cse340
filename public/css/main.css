@@ -101,6 +101,10 @@ nav a:focus-visible {
   color: #ffffff;
 }
 
+.register {
+  align-content: end;
+}
+
 /* Flash message styles */
 .alert {
   padding: 15px;
