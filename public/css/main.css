@@ -237,6 +237,46 @@ ul.org-list li strong {
   margin-bottom: 0.2rem;
 }
 
+/* === Tables === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+thead {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+th {
+  text-align: left;
+  padding: 0.875rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+td {
+  padding: 0.875rem 1.25rem;
+  font-size: 1rem;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: var(--color-bg);
+}
+
 .org-contact {
   font-size: 0.875rem;
   color: var(--color-text-muted);
