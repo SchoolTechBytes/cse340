@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS project_categories CASCADE;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS volunteers;
 
 CREATE TABLE organizations (
     organization_id SERIAL PRIMARY KEY,
@@ -65,6 +66,26 @@ CREATE TABLE users (
 	password_hash VARCHAR(255) NOT NULL,
 	role_id INTEGER REFERENCES roles(role_id),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE volunteers (
+    volunteer_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    project_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_volunteers_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_volunteers_project
+        FOREIGN KEY (project_id)
+        REFERENCES projects(project_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_volunteers_user_project
+        UNIQUE(user_id, project_id)
 );
 
 INSERT INTO organizations (name, description, contact_email, logo_filename)

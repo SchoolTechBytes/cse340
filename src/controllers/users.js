@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { getVolunteerProjectsByUserId } from '../models/volunteers.js';
 
 const showUserRegistrationForm = async (req, res) => {
     const title = 'Register a new User Account';
@@ -76,13 +77,19 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
-const showDashboard = (req, res) => {
-    const user = req.session.user;
-    res.render('dashboard', {
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email
-    });
+const showDashboard = async (req, res, next) => {
+    try {
+        const user = req.session.user;
+        const volunteerProjects = await getVolunteerProjectsByUserId(user.user_id);
+        res.render('dashboard', {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email,
+            volunteerProjects
+        });
+    } catch (err) {
+        next(err);
+    }
 };
 
 // Middleware for role check for route access

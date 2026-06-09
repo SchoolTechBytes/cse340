@@ -42,6 +42,7 @@ import {
     showUsersPage
 } from './controllers/users.js';
 import { testErrorPage } from './controllers/errors.js';
+import { processVolunteer, processUnvolunteer } from './controllers/volunteers.js';
 
 const router = express.Router();
 
@@ -78,6 +79,8 @@ router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
 
 router.get('/dashboard', requireLogin, showDashboard);
+router.post('/project/:id/volunteer', requireLogin, processVolunteer);
+router.post('/project/:id/unvolunteer', requireLogin, processUnvolunteer);
 router.get('/usersPage', requireRole('admin'), showUsersPage);
 
 // error-handeling routes
